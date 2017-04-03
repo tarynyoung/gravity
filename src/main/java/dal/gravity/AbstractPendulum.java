@@ -4,6 +4,9 @@ package dal.gravity;
  * Represents a pendulum
  */
 public abstract class AbstractPendulum {
+	
+	/** gravitational constant */
+    public static final double GRAVITY = 9.80665;
 
 
     /* instance variables - string length, point mass, angular displacement
