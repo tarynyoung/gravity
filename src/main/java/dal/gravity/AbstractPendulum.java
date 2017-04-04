@@ -43,7 +43,7 @@ public abstract class AbstractPendulum {
 
     public double getStringLength () { return stringLength; }
 
-    public GravityModel getGravitationalField () { return g; }
+    public double getGravitationalField () { return g.getGravitationalField(); }
     
     public void setGravitationalField(GravityModel model){
     	g = model;
