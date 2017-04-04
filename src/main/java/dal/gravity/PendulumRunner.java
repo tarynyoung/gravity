@@ -9,12 +9,14 @@ import java.text.NumberFormat;
 public class PendulumRunner {
 	
 	/** gravitational constant */
-    public static final double GRAVITY = 9.80665;
+    public static final double earth = 9.80665;
+    public static final double jupiter = 25.0;
 
     public static void main (String [] args) {
 	NumberFormat nf = NumberFormat.getInstance ();
 	nf.setMaximumFractionDigits (3);
-	GravityConstant g = new GravityConstant(GRAVITY);
+	GravityConstant g = new GravityConstant(earth);
+	GravityConstant j = new GravityConstant(jupiter);
 
 	double delta = (args.length == 0) ? .1 : Double.parseDouble (args[0]);
 	double sLen = 10, pMass = 10, theta0 = Math.PI/30;
@@ -26,8 +28,9 @@ public class PendulumRunner {
 	// print out difference in displacement in 1 second intervals
 	// for 20 seconds
 	int iterations = (int) (1/delta);
-	System.out.println ("analytical vs. numerical displacement (fine, coarse)");
-	for (int second = 1; second <= 20; second++) {
+	System.out.println ("Earth");
+	System.out.println ("analytical vs. numerical displacement (fine, coarse)\n");
+	for (int second = 1; second <= 20; second++) {	
 	    for (int i = 0; i < iterations; i++) rp.step ();
 	    for (int i = 0; i < 10; i++) rpCoarse.step (); 
 	    System.out.println ("t=" + second + "s: \t" + 
@@ -37,6 +40,24 @@ public class PendulumRunner {
 				+ "\t" + 
 				nf.format (Math.toDegrees (rpCoarse.getLastTheta ())));
 	}
+	
+	sp.setGravitationalField(j);
+	rp.setGravitationalField(j);
+	iterations = (int) (1/delta);
+	System.out.println ("Jupiter");
+    System.out.println ("analytical vs. numerical displacement (fine, coarse)");
+	for (int second = 1; second <= 20; second++) {	
+	    for (int i = 0; i < iterations; i++) rp.step ();
+	    for (int i = 0; i < 10; i++) rpCoarse.step (); 
+	    System.out.println ("t=" + second + "s: \t" + 
+				nf.format (Math.toDegrees (sp.getTheta (second))) 
+				+ "\t" +
+				nf.format (Math.toDegrees (rp.getLastTheta ()))
+				+ "\t" + 
+				nf.format (Math.toDegrees (rpCoarse.getLastTheta ())));
+	}
+	
     }
+
 }
 
